@@ -10,16 +10,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var port = os.Getenv("PORT")
-
 // RedisClient :
 var RedisClient *redis.Client
 
 func main() {
 
+	var port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	log.Println("Server running on port :", port, "...")
 	router := mux.NewRouter()
 	RedisClient, _ = ConnectRedis()
+	RedisClient.SAdd("alf", `{"letter":"alf", "name":"مرحبا"}`)
 
 	AddRoutes(router)
 
